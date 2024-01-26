@@ -1,35 +1,21 @@
+// App.js
 import './App.css';
-import { useState } from "react";
+import Button from './button';
+import React from 'react';
+import useNumber from './state';
+import Title from './title';
 
 function App() {
-  const [number, newNamber] = useState(0);
-  const [textColor, newTextColor] = useState("black");
-  const [text, newText] = useState(true);
-
-  const color = () => {
-    newTextColor(textColor === "black" ? "Red" : "black");
-  }
-  const ShowHide = () => {
-    newText(!text);
-  }
-  const Increase = () => {
-    newNamber((prevNum) => prevNum + 1);
-  }
-  const Decrease = () => {
-    newNamber((prevNum) => prevNum - 1);
-  }
-  const zero = () => {
-    newNamber(0);
-  }
+  const { increase, number, decrease, colorchange, text, setZero, hideShow, hide } = useNumber();
 
   return (
     <div className="App">
-      <button onClick={Increase}> Increase</button>
-      <button onClick={Decrease}> Decrease </button>
-      <button onClick={zero}> Set to zero</button>
-      <button onClick={color}> Change color </button>
-      <button onClick={ShowHide}>Show/Hide</button>
-      {text && <h1 style={{ color: textColor }}>{number}</h1>}
+      <Button color="green" onClick={increase} title="Increase" />
+      <Button color="red" onClick={decrease} title="Decrease" />
+      <Button color="#fff" onClick={colorchange} title="change Color" />
+      <Button color="#000" onClick={setZero} title="Set zero" />
+      <Button color="yellow" onClick={hideShow} title="Hide / show" />
+      {hide && <Title text={text} number={number} />}
     </div>
   );
 }
