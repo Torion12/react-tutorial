@@ -1,21 +1,34 @@
 // App.js
 import './App.css';
-import Button from './button';
-import React from 'react';
-import useNumber from './state';
-import Title from './title';
+import React, { useState } from 'react';
 
 function App() {
-  const { increase, number, decrease, colorchange, text, setZero, hideShow, hide } = useNumber();
+  const [todoList, setTodoList] = useState([]);
+  const [value, setValue] = useState("");
+
+  const addList = () => {
+    setTodoList([...todoList, value]);
+    setValue("");
+  }
+  const onChangeValue = (e) => {
+    setValue(e.target.value);
+  }
+  const deletTask = (toDelete) => {
+    const newTodolist = todoList.filter((value, key) => key !== toDelete);
+    setTodoList(newTodolist);
+  }
 
   return (
     <div className="App">
-      <Button color="green" onClick={increase} title="Increase" />
-      <Button color="red" onClick={decrease} title="Decrease" />
-      <Button color="#fff" onClick={colorchange} title="change Color" />
-      <Button color="#000" onClick={setZero} title="Set zero" />
-      <Button color="yellow" onClick={hideShow} title="Hide / show" />
-      {hide && <Title text={text} number={number} />}
+      <input onChange={onChangeValue} value={value}></input>
+      <button onClick={addList}>Add</button>
+      {todoList.map((value, key) => {
+        return (
+          <><h1>{value}</h1>
+            <button onClick={() => deletTask(key)}>x</button>
+          </>
+        )
+      })}
     </div>
   );
 }
