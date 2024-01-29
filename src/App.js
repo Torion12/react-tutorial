@@ -1,34 +1,25 @@
 // App.js
+import Axios from 'axios';
 import './App.css';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 
 function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [value, setValue] = useState("");
 
-  const addList = () => {
-    setTodoList([...todoList, value]);
-    setValue("");
-  }
-  const onChangeValue = (e) => {
-    setValue(e.target.value);
-  }
-  const deletTask = (toDelete) => {
-    const newTodolist = todoList.filter((value, key) => key !== toDelete);
-    setTodoList(newTodolist);
-  }
+  const [fact, getFact] = useState("");
 
+  const getFactData = (title) => {
+    Axios.get(`https://excuser-three.vercel.app/v1/excuse/${title}/`).then((res) => {
+      console.log(res.data);
+      getFact(res.data[0].excuse);
+    });
+  }
   return (
     <div className="App">
-      <input onChange={onChangeValue} value={value}></input>
-      <button onClick={addList}>Add</button>
-      {todoList.map((value, key) => {
-        return (
-          <><h1>{value}</h1>
-            <button onClick={() => deletTask(key)}>x</button>
-          </>
-        )
-      })}
+      <h1>{fact}</h1>
+      <button onClick={() => getFactData("family")}>Family</button>
+      <button onClick={() => getFactData("office")}>Office</button>
+      <button onClick={() => getFactData("family")}>children</button>
     </div>
   );
 }
